@@ -1,5 +1,5 @@
+import time
 import socket
-from datetime import datetime
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((socket.gethostname(), 1234))
@@ -9,16 +9,17 @@ clientsocket, address = s.accept()
 print(f"Connection from {address} has been established")
 
 msg = clientsocket.recv(1024)
-now = datetime.now()
+time.sleep(5)
 
-full_msg = msg.decode("utf-8")
-print(full_msg)
-current_time = now.strftime("%H:%M:%S")
-print("Time =", current_time)
+sent = clientsocket.send(msg)
 
-clientsocket.send(bytes("Hello, client", "utf-8"))
+print(sent)
+print(len(msg))
 
+if sent==len(msg):
+	print("Sent succesfuly")
+else:
+	print("Failed")
 
-
-
+s.close()
 
