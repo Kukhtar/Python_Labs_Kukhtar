@@ -8,18 +8,16 @@ s.listen(5)
 clientsocket, address = s.accept()
 print(f"Connection from {address} has been established")
 
-msg = clientsocket.recv(1024)
-time.sleep(5)
+while True:
+	msg = clientsocket.recv(1024)
+	sent = clientsocket.send(msg)
 
-sent = clientsocket.send(msg)
+	full_msg = msg.decode("utf-8")
+	print(full_msg)
 
-print(sent)
-print(len(msg))
+	if full_msg.strip() == "stop":
+		break
 
-if sent==len(msg):
-	print("Sent succesfuly")
-else:
-	print("Failed")
-
+print("Connection closed!!")
 s.close()
 
