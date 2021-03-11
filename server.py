@@ -1,23 +1,49 @@
-import time
+import threading
 import socket
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((socket.gethostname(), 1234))
-s.listen(5)
+host = '127.0.0.1'
+port = 55555
 
-clientsocket, address = s.accept()
-print(f"Connection from {address} has been established")
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((host, port))
+server.listen()
 
-while True:
-	msg = clientsocket.recv(1024)
-	sent = clientsocket.send(msg)
+clients = []
+nicknames = []
 
-	full_msg = msg.decode("utf-8")
-	print(full_msg)
+def broadcast(message):
+	for client in clients:
+		client.send(message)
 
-	if full_msg.strip() == "stop":
-		break
+def handle(client):
+	while True:
+		try:
+			message = client.recv(1024)
+			broadcast(message)
+		except:
+			index = clients.index(client)
+			clients.remove(client)
+			client.close()
+			nickname = nicknames[index]
+			broadcast(f'{nickname} left the chat'.encode('ascii'))
+			nicknames.remove(nickname)
+			break
 
-print("Connection closed!!")
-s.close()
+def receive():
+	while True:
+		client, address = server.accept()
+		print(f"Connected with {str(address)}")
 
+		client.send('NICK'.encode('ascii'))
+		nickname = client.recv(1024).decode('ascii')
+		nicknames.append(nickname)
+		clients.append(client)
+		
+		print(f'nickname of the client is {nickname}')
+		broadcast(f'{nickname} joined the chat'.encode('ascii'))
+		client.send('Connected to the server'.encode('ascii'))
+
+		thread = threading.Thread(target=handle, args=(client,))
+		thread.start()
+
+receive()		
