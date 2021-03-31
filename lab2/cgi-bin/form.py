@@ -6,7 +6,7 @@ text1 = form.getfirst("TEXT_1", "")
 text2 = form.getfirst("TEXT_2", "")
 text3 = form.getfirst("if", "")
 text4 = form.getfirst("lv", "")
-text5 = form.getfirst("contact", "none")
+text5 = form.getfirst("contact", "")
 
 if text3 == "on":
 	text3 = "Ivano-Framkivsk"
