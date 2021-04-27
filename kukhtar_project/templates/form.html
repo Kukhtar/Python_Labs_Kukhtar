@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact
+{% endblock %}
+
+{%block content%}
+<h1>Form</h1>
+<form method="POST" action="{{ url_for('form') }}">
+	{% with messages = get_flashed_messages() %}
+  		{% if messages %}
+    	{{messages}}
+    		<ul class=flashes>
+    			{% for message in messages %}
+      				<li>{{ message }}</li>
+    				{% endfor %}
+    		</ul>
+  		{% endif %}
+	{% endwith %}
+<br><br>
+	{{form.csrf_token}}
+	{{form.name.label}}{{form.name(size=20)}}
+	{{form.email.label}}{{form.email(size=20)}}
+	{{form.message.label}}{{form.message(size=20)}}
+
+	<input type="submit" value="Send">
+
+</form>
+
+{%endblock%}
