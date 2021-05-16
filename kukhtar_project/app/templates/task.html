@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tasks
+{% endblock %}
+
+{%block content%}
+<h1>Task</h1>
+
+  	<h4>Task № {{args.id}}</h4>
+    
+    <li>Title - {{args.title}}</li>
+	<li>Description'я - {{args.description}}</li>
+    <li>created - {{args.created}}</li>
+    <li>priority - {{args.priority}}</li>
+
+    <br>
+    <br>
+    <a href="/task/{{ args.id }}/delete"><input type="button" value="Delete"></a>
+    <a href="/task/{{ args.id }}/update"><input type="button" value="Update"></a>
+    	
+    </form>
+
+
+{%endblock%}

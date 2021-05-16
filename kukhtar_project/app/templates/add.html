@@ -5,14 +5,13 @@ Contact
 {% endblock %}
 
 {%block content%}
-<h1>Form</h1>
+<h1>Add task</h1>
 <form method="POST" action="{{ url_for('task') }}">
 
 	{{form.csrf_token}}
-	{{form.name.label}}{{form.name(size=20)}}
-	{{form.email.label}}{{form.email(size=20)}}
-	{{form.message.label}}{{form.message(size=20)}}
-
+	{{form.title.label}}{{form.title(size=20)}}
+	{{form.description.label}}{{form.description(size=20)}}
+	{{form.priority.label}}{{form.priority()}}
 	<input type="submit" value="Send">
 
 </form>

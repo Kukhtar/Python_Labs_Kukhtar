@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact
+{% endblock %}
+
+{%block content%}
+<h1>Update task</h1>
+<form method="POST" action="{{ url_for('update') }}">
+
+	{{form.csrf_token}}
+	{{form.title.label}}{{form.title(size=20)}}
+	{{form.description.label}}{{form.description(size=20)}}
+	{{form.priority.label}}{{form.priority()}}
+	<input type="submit" value="Update">
+
+</form>
+
+{%endblock%}
