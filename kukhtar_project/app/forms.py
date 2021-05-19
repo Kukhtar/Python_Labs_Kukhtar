@@ -13,4 +13,7 @@ class TaskForm(FlaskForm):
     	("low", "low"), 
     	("medium", "medium"), 
     	("high", "high")]) 
+	categories = SelectField(u'Категорії')
 
+class CategoryForm(FlaskForm):
+	name = StringField('Назва ', validators=[DataRequired()])

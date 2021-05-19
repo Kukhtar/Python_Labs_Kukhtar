@@ -6,7 +6,7 @@ Contact
 
 {%block content%}
 <h1>Update task</h1>
-<form method="POST" action="{{ url_for('update') }}">
+<form method="POST" action="/task/{{ task.id }}/update">
 
 	{{form.csrf_token}}
 	{{form.title.label}}{{form.title(size=20)}}

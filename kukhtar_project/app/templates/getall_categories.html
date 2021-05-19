@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Categories
+{% endblock %}
+
+{%block content%}
+<h1>Categories</h1>
+
+      {%for i in range(0, len)%}
+      <br><br>
+  	<h4>Category № {{args[i].id}}</h4>
+    
+    <a href="/category/{{ args[i].id }}"><li>Name - {{args[i].name}}</li></a>
+
+
+{%endfor%}
+
+
+{%endblock%}
