@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{%block content%}
+<h1>Register</h1>
+
+<br>
+<span style="color: red"><i>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+</i>
+</span>
+<br>
+<span style="color: red"><i>
+{% with messages = form.errors %}
+  {% if "email" in messages %}
+    {{ messages['email'][0] }}
+  {% endif %}
+  {% if "username" in messages %}
+    {{ messages['username'][0] }}
+  {% endif %}
+{% endwith %}
+</i>
+</span>
+<div style="width: 500px; clear: both;">
+<form method="POST" action="{{ url_for('register') }}">
+	{{form.csrf_token}}
+	<br>
+	{{form.username.label}} &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;{{form.username(size=20)}}
+	<br>
+	{{form.email.label}}  &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;{{form.email(size=20)}}
+	<br>
+	{{form.password.label}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;{{form.password(size=20)}}
+	<br>
+	{{form.confirm_password.label}} {{form.confirm_password(size=20)}}
+	<br>
+	{{form.submit.label}}  &nbsp; &nbsp; &nbsp; &nbsp;{{form.submit()}}
+	
+
+
+</form>
+</div>
+{%endblock%}

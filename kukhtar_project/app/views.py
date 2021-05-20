@@ -2,8 +2,8 @@ from flask import Flask, render_template, url_for, request, flash, redirect
 from app import app
 import platform, sys
 from datetime import datetime
-from .forms import TaskForm, CategoryForm
-from .models import Task, Category
+from .forms import TaskForm, CategoryForm, LoginForm, RegistrationForm
+from .models import Task, Category, User
 from flask_sqlalchemy import SQLAlchemy
 from app.models import db
 
@@ -152,5 +152,41 @@ def update_category(id):
 		return redirect(url_for('getall'))
 	print('B')
 	return render_template('update.html', form=f, pageTitle='Form', data=data, task=task_to_update)
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+	data = getData()
+	f = RegistrationForm()
+	print('AAAAAAAAAAAa')
+	if f.validate_on_submit():
+		print('AAAAAAAAAAAa')
+		a = User(username=f.username.data, email = f.email.data, password = f.password.data)
+		db.session.add(a)
+		db.session.commit()
+		print('AAAAAAAAAAAa')
+		flash('Account created for ' + str(f.username.data), category = 'success')
+		return redirect(url_for('login'))
+	return render_template('register.html', form=f, title='Register', data=data)
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+	data = getData()
+	form = LoginForm()
+	if form.validate_on_submit():
+		email = form.email.data
+		password = form.password.data
+		print('asdasdasd')
+		print(User.query.all())
+		print('asdasdasd')
+
+		record = User.query.filter_by(email=email).first() 
+		print(record)
+		if  record.password == password:
+			flash('You have been logged in!', category = 'success')
+			print('Yes!!!')
+			return redirect(url_for('index'))
+		else:
+			flash('Login unsuccessful. Please check username and password', category = 'success')
+	return render_template('login.html', form=form, title='Login', data=data)			
 if __name__ == "__main__":
 	app.run(debug=True)
