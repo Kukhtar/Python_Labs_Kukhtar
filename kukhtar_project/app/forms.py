@@ -16,8 +16,10 @@ class TaskForm(FlaskForm):
     	("high", "high")]) 
 	categories = SelectField(u'Категорії')
 
+
 class CategoryForm(FlaskForm):
 	name = StringField('Назва ', validators=[DataRequired()])
+
 
 class RegistrationForm(FlaskForm):
 	username = StringField('Username', 
@@ -40,6 +42,7 @@ class RegistrationForm(FlaskForm):
 	def validate_username(self, field):
 		if User.query.filter_by(username=field.data).first():
 			raise ValidationError('Username already registered.')
+
 
 class LoginForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(), Email()])

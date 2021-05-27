@@ -6,6 +6,19 @@ Ivan Kukhtar
 
 {%block content%}
 <h1>My portfolio</h1>
+		<br>
+<span style="color: red"><i>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+</i>
+</span>
       <p class="lead">My name is Ivan Kukhtar, and i am Java developer.</p>
       <p>I have one year expiriance as a java developer and would like to get you offer.</p>
 

@@ -1,8 +1,15 @@
 from datetime import datetime
 from app import app
 from flask_sqlalchemy import SQLAlchemy
+from app import login_manager
+from flask_login import UserMixin
 
 db = SQLAlchemy(app)
+
+
+@login_manager.user_loader
+def user_loader(user_id):
+	return User.query.get(int(user_id))
 
 class Task(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +21,7 @@ class Task(db.Model):
 	category_id = db.Column(db.Integer(), db.ForeignKey('categories.id'))
 
 	def __repr__(self):
-		return '<Agreement %r>' % self.id 
+		return '<Agreement %r>' % self
 
 class Category(db.Model):
 	__tablename__ = 'categories'
@@ -24,7 +31,9 @@ class Category(db.Model):
 
 	def __repr__(self):
 		return "<{}:{}>".format(id, self.name)
-class User(db.Model):
+
+
+class User(db.Model, UserMixin):
 	id = db.Column(db.Integer, primary_key = True)
 	username = db.Column(db.String(20), unique=True, nullable=False)
 	email = db.Column(db.String(60), nullable=False)

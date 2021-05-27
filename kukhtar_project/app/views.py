@@ -5,14 +5,11 @@ from datetime import datetime
 from .forms import TaskForm, CategoryForm, LoginForm, RegistrationForm
 from .models import Task, Category, User
 from flask_sqlalchemy import SQLAlchemy
-from app.models import db
-
-with app.app_context():
-    db.create_all()
+from app import db
+from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
 def index():
-	db.create_all()
 	data = getData()
 	return render_template('index.html', data = data)
 
@@ -155,6 +152,8 @@ def update_category(id):
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+	if current_user.is_authenticated:
+		return redirect(url_for('index'))
 	data = getData()
 	f = RegistrationForm()
 	print('AAAAAAAAAAAa')
@@ -170,6 +169,8 @@ def register():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+	if current_user.is_authenticated:
+		return redirect(url_for('index'))
 	data = getData()
 	form = LoginForm()
 	if form.validate_on_submit():
@@ -182,11 +183,24 @@ def login():
 		record = User.query.filter_by(email=email).first() 
 		print(record)
 		if  record.password == password:
-			flash('You have been logged in!', category = 'success')
-			print('Yes!!!')
+			login_user(record, remember=form.remember.data)
+			flash('You have been loggin in!!!', category='success')
 			return redirect(url_for('index'))
 		else:
 			flash('Login unsuccessful. Please check username and password', category = 'success')
 	return render_template('login.html', form=form, title='Login', data=data)			
 if __name__ == "__main__":
 	app.run(debug=True)
+
+@app.route("/logout")
+def logout():
+	logout_user()
+	flash('You have been logged out')
+	return redirect(url_for('index'))
+
+
+@app.route("/account")
+@login_required
+def account():
+	data = getData()
+	return render_template('account.html', data=data)
