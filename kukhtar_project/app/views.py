@@ -1,12 +1,14 @@
-from flask import Flask, render_template, url_for, request, flash, redirect
+from flask import Flask, render_template, url_for, request, flash, redirect, current_app
 from app import app
 import platform, sys
 from datetime import datetime
-from .forms import TaskForm, CategoryForm, LoginForm, RegistrationForm
+from .forms import TaskForm, CategoryForm, LoginForm, RegistrationForm, UpdateAccountForm
 from .models import Task, Category, User
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 from flask_login import login_user, current_user, logout_user, login_required
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import  FileStorage
 
 @app.route('/')
 def index():
@@ -199,8 +201,54 @@ def logout():
 	return redirect(url_for('index'))
 
 
-@app.route("/account")
+@app.route("/account", methods=['POST', 'GET'])
 @login_required
 def account():
+	form = UpdateAccountForm()
+	user = db.session.query(User).filter_by(email=current_user.email).first()
+	if form.validate_on_submit():
+		# if form.picture.data:
+		# 	picture_file = form.picture.data
+		# 	user.image_file = picture_file
+		f = form.picture.data
+		f.save(secure_filename(f.filename))
+		user.username = form.username.data
+		user.email = form.email.data
+		user.image_file = f.filename
+		db.session.commit()
+		print(user.username)
+		flash('Your account has been updated !', 'success')
+		return redirect(url_for('index'))
+	elif request.method == 'GET':
+		print(user.username)
+		form.username.data = user.username 
+		form.email.data = user.email
+	# image_file = url_for('static', form=form)
 	data = getData()
-	return render_template('account.html', data=data)
+	image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+	return render_template('account.html', data=data, form=form, image_file=image_file)
+
+
+# def save_picture(form_pictute):
+# 	random_hex = secrets.token_hex(8)
+# 	_, f_ext = os.path.splitext(form_pictute.filename)
+# 	picture_fn = random_hex + f_ext
+# 	picture_path = os.path.join(
+# 		current_app.root_path, 'static/img/profile_pics', picture_fn)
+
+# 	img = Image.open(form_pictute)
+# 	img_w, img_h = img.size
+# 	if img_w < 500 or img_h < 500:
+# 		if img_w > img_h:
+# 			output_size = (img_h, img_h)
+# 			img = ImageOps.fit(img, output_size, Image.ANTIALIAS)
+# 		else:
+# 			output_size = (img_w, img_w)
+# 			img = ImageOps.fit(img, output_size, Image.ANTIALIAS)
+# 	else:
+# 		output_size = (500, 500)
+# 		img = ImageOps.fit(img, output_size, Image.ANTIALIAS)
+
+# 	img.save(picture_path)
+
+# 	return picture_fn
