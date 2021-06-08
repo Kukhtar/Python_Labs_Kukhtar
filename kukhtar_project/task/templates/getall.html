@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tasks
+{% endblock %}
+{% block menu%}
+<li class="nav-item active">
+            <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task">Get all Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task/create">Create Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/category">Get all Category</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/category/create">Create Category</a>
+          </li>
+{% endblock %}
+{%block content%}
+<h1>Tasks</h1>
+
+      {%for i in range(0, len)%}
+      <br><br>
+  	<h4>Task № {{args[i].id}}</h4>
+    
+    <a href="/task/{{ args[i].id }}"><li>Title - {{args[i].title}}</li></a>
+	<li>Description'я - {{args[i].description}}</li>
+    <li>created - {{args[i].created}}</li>
+    <li>priority - {{args[i].priority}}</li>
+    <li>category - {{categories[i].name}}</li>
+
+
+{%endfor%}
+
+
+{%endblock%}

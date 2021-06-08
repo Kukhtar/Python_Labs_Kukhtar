@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact
+{% block menu%}
+<li class="nav-item active">
+            <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task">Get all Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task/create">Create Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/category">Get all Category</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/category/create">Create Category</a>
+          </li>
+{% endblock %}
+{% endblock %}
+
+{%block content%}
+<h1>Add task</h1>
+<form method="POST" action="{{ url_for('tasks_bp.task') }}">
+
+	{{form.csrf_token}}
+	{{form.title.label}}{{form.title(size=20)}}
+	{{form.description.label}}{{form.description(size=20)}}
+	{{form.priority.label}}{{form.priority()}}
+	{{form.categories.label}}{{form.categories()}}
+	<input type="submit" value="Send">
+
+</form>
+
+{%endblock%}

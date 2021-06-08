@@ -1,10 +1,8 @@
 from datetime import datetime
-from app import app
 from flask_sqlalchemy import SQLAlchemy
-from app import login_manager
 from flask_login import UserMixin
-
-db = SQLAlchemy(app)
+from extensions.database import db
+from extensions.database import login_manager
 
 
 @login_manager.user_loader

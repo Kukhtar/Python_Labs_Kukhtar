@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Category
+{% block menu%}
+<li class="nav-item active">
+            <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task">Get all Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task/create">Create Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/category">Get all Category</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/category/create">Create Category</a>
+          </li>
+{% endblock %}
+{% endblock %}
+
+{%block content%}
+<h1>Category</h1>
+
+  	<h4>Category № {{args.id}}</h4>
+    
+    <li>Name - {{args.name}}</li>
+	
+    <br>
+    <br>
+    <a href="/category/{{ args.id }}/delete"><input type="button" value="Delete"></a>
+    <a href="/category/{{ args.id }}/update"><input type="button" value="Update"></a>
+    	
+    </form>
+
+
+{%endblock%}

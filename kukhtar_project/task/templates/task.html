@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tasks
+{% block menu%}
+<li class="nav-item active">
+            <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task">Get all Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/task/create">Create Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/category">Get all Category</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/category/create">Create Category</a>
+          </li>
+{% endblock %}
+{% endblock %}
+
+{%block content%}
+<h1>Task</h1>
+
+  	<h4>Task № {{args.id}}</h4>
+    
+    <li>Title - {{args.title}}</li>
+	<li>Description'я - {{args.description}}</li>
+    <li>created - {{args.created}}</li>
+    <li>priority - {{args.priority}}</li>
+
+    <br>
+    <br>
+    <a href="/task/{{ args.id }}/delete"><input type="button" value="Delete"></a>
+    <a href="/task/{{ args.id }}/update"><input type="button" value="Update"></a>
+    	
+    </form>
+
+
+{%endblock%}
